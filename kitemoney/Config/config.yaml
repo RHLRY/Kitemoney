@@ -1,0 +1,3 @@
+- Path:
+    # provide relative path of cred file
+    cred: ../common/kite_cred.yaml
