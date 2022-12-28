@@ -1,7 +1,9 @@
 #%%
 import yaml
 import os
+import logging
 
+from kiteconnect import KiteConnect
 
 #%%
 # UDF
@@ -27,22 +29,28 @@ def get_cred(conf) :
     USER_ID = cred[0]['Credentials']['USER_ID']
     assert 'PASSWD' in cred[0]['Credentials'].keys(), 'PASSWD Not Set'
     PASSWD = cred[0]['Credentials']['PASSWD']
+    assert 'TWOFA' in cred[0]['Credentials'].keys(), 'PASSWD Not Set'
+    TWOFA = cred[0]['Credentials']['TWOFA']
     assert 'TOKEN' in cred[0]['Credentials'].keys(), 'TOKEN Not Set'
     TOKEN = cred[0]['Credentials']['TOKEN']
 
-    return (USER_ID, PASSWD, TOKEN)
+    return (USER_ID, PASSWD, TWOFA, TOKEN)
 
 #%%
+#configuration
+logging.basicConfig(level=logging.DEBUG)
+
 with open('Config/config.yaml', 'r') as confyaml :
     conf = yaml.load(confyaml, Loader=yaml.FullLoader)
 
 assert 'Path' in conf[0].keys(), 'Path Not Set'
 assert 'cred' in conf[0]['Path'].keys(), 'Path Not Set'
 
-#%%
-USER_ID, PASSWD, TOKEN, = get_cred(conf)
+USER_ID, PASSWD, TWOFA, TOKEN, = get_cred(conf)
 
-print (USER_ID, PASSWD, TOKEN)
+print (USER_ID, PASSWD, TWOFA, TOKEN)
 
 # %%
 
+kite = KiteConnect(api_key="your_api_key")
+# %%
